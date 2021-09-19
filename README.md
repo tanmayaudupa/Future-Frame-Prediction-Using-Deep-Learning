@@ -1,0 +1,17 @@
+# Future-Frame-Prediction-Using-Deep-Learning
+A model that predicts the future frame based on the movement of objects in the previous set of N frames.
+
+ Due to the proven effectiveness of Deep Learning in image processing, our goal is to develop a generative model capable of producing a future frame given a set of sequential frames as input. GANs and Auto-Encoders are the models used in implementing and achieving the target results.
+ # Dataset
+ The data being used for building the model is the KITTI Dataset. KITTI dataset was made of videos recorded by car-mounted cameras. It consists of images and videos captured from a Station Wagon and is used in autonomous driving and mobile robotics. The raw dataset is divided into ‘City’, ‘Residential’,’Campus’ and ‘Person’ and is 180GB in size. The one we are using is the 'City' category of the dataset. The dataset consists of black and white frames captured while driving, of which we have used 1000 images, to train our model. 
+# Architecture 1 
+We pass each frame to the Encoder and get the hidden/coded representation of that frame. Once the encoded layers of all the frames in a set are obtained, they are overlapped with each other and then the pixel values are normalised. This process is repeated for all the sets of N frames. Finally, the list of encoded layers of N different sets are then fed to the decoder to generate the predicted image.
+# Architecture 2
+In this approach, we pass each frame to the encoder and get the hidden/code representation of that frame. Now we concatenate the code representations of each frame’s code layer. The concatenated code layer is then sent to the decoder to predict the next frame. For example, suppose the code layer shape of a single frame is 32 x 87 x 128, we concatenate the layers of n frames to form (32 x 87 x 128)*n. The way the code layer representations are concatenated is very similar to the kind of input given to a fully connected layer. Therefore the way this can be visualized is a single vector containing all the code layer representations where the filters are modified in order to take into account the time sequence of the frames.
+# Architecture 3
+Here, we pass each frame to an encoder which gives a code representation of the same as shown in Fig 5. This code representation is then overlapped with the next frame in the sequence and then passed through the encoder again. This is repeated for all the frames in the set. The final code layer is then fed to a decoder.
+# Architecture 4
+In this approach, the input images are concatenated in the beginning before giving it to the encoder. This can be visualized as a single vector containing all the input image representations one behind the other. This concatenation helps in making sure that the relative sequence of frames over a particular time frame are taken into consideration.
+
+# GAN
+The predicted frame obtained from one of the above architectures is then subjected to discriminator along with the original frame. The discriminator is then responsible for distinguishing between these two frames. The output of the discriminator is back propagated to the generator which is used to improve the predictions by learning from the error measures obtained. The generator and discriminator work in sync to make sure that if either one of them is overperforming, the other one tries to train better to nullify this effect and hence reach an equilibrium. 
